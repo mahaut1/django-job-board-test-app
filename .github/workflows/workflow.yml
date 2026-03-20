@@ -1,8 +1,8 @@
 name: Build and Push to ACR
- on: 
+on: 
     push:
       branches: ['feature/cicd-setup']  
-  jobs:
+jobs:
     build:
       name: 'Build and Push to ACR'
       runs-on: ubuntu-24.04
