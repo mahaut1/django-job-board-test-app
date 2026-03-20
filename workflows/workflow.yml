@@ -1,0 +1,19 @@
+name: Build and Push to ACR
+ on: 
+    push:
+      branches: ['feature/cicd-setup']  
+  jobs:
+    build:
+      name: 'Build and Push to ACR'
+      runs-on: ubuntu-24.04
+      environment: dev
+      steps:
+        - name: Chekout
+          uses: actions/checkout@v4
+        - name: Docker Login to ACR
+          uses: docker/login-action@v3
+          with:
+            registry:
+            username:
+            password:
+
