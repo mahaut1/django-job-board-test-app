@@ -8,14 +8,14 @@ jobs:
       runs-on: ubuntu-24.04
       environment: dev
       steps:
-        - name: Chekout
+        - name: Checkout
           uses: actions/checkout@v4
         - name: Docker Login to ACR
           uses: docker/login-action@v3
           with:
-            registry:${{vars.registry}}
-            username:${{vars.username}}
-            password:${{secrets.password}}
+            registry: ${{vars.registry}}
+            username: ${{vars.username}}
+            password: ${{secrets.password}}
 
         - name: Build and Push to ACR
           uses: docker/build-push-action@v6
