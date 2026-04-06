@@ -5,4 +5,4 @@ services:
      dockerfile: Dockerfile
     ports:
       - "80:8000"
-    env_file: .envlocal
+    env_file: .env.local

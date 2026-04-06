@@ -20,6 +20,7 @@ jobs:
         - name: Build and Push to ACR
           uses: docker/build-push-action@v6
           with:
+            context: .
             push: true
             tags: ${{vars.registry}}/django-job-board:latest
             file: Dockerfile
