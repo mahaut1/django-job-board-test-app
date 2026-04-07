@@ -20,14 +20,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v++r+fn6w$j+yr3ye5+_qnqepn*h(n@i$-@hem%b=t3@4za%wp'
-
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-v++r+fn6w$j+yr3ye5+_qnqepn*h(n@i$-@hem%b=t3@4za%wp"
+)
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('APP_DEBUG', 'False') == True
 
-ALLOWED_HOSTS = ['127.0.0.1', os.getenv('APP_DOMAIN','localhost')]
-
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "127.0.0.1,localhost"
+).split(",")
 # CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'https://'+ os.getenv('APP_DOMAIN','localhost')]
+
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://127.0.0.1,http://localhost"
+).split(",")
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,6 +92,9 @@ DATABASES = {
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
         "HOST": os.getenv("POSTGRES_HOST"),
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "OPTIONS": {
+            "sslmode": "require",
+        },
     }
 }
 
