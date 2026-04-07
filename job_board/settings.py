@@ -44,13 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',  # Ajouter l'app home pour que Django trouve les templates
-    'jobs',  # Ajouter l'app home pour que Django trouve les templates
+    'jobs',
+    'storages'  # Ajouter l'app home pour que Django trouve les templates
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -89,12 +91,12 @@ DATABASES = {
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
         "HOST": os.getenv("POSTGRES_HOST"),
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
-        "OPTIONS": {
-            "sslmode": "require",
-        },
+        "OPTIONS": {},
     }
 }
 
+if os.getenv("POSTGRES_SSLMODE"):
+    DATABASES["default"]["OPTIONS"]["sslmode"] = os.getenv("POSTGRES_SSLMODE")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
