@@ -131,14 +131,43 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGE_ACCOUNT_NAME = os.getenv("STORAGE_ACCOUNT_NAME")
+STORAGE_ACCOUNT_KEY = os.getenv("STORAGE_ACCOUNT_KEY")
+AZURE_CONTAINER = "static"
+
+if STORAGE_ACCOUNT_NAME and STORAGE_ACCOUNT_KEY:
+    STATIC_URL = f"https://{STORAGE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                "account_name": STORAGE_ACCOUNT_NAME,
+                "account_key": STORAGE_ACCOUNT_KEY,
+                "azure_container": AZURE_CONTAINER,
+            },
+        },
+    }
+else:
+    STATIC_URL = "/static/"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 # Media files (User uploads - images, CVs, etc.)
 MEDIA_URL = '/media/'

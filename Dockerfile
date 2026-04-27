@@ -20,6 +20,10 @@ COPY . .
 
 COPY --from=tailwind-builder /app/static/dist ./static/dist
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8000
 
-CMD ["sh", "-c", "sleep 10 && python manage.py collectstatic --noinput && python manage.py migrate && gunicorn job_board.wsgi:application --bind 0.0.0.0:8000 --workers 2"]
+ENTRYPOINT ["/entrypoint.sh"]
+
